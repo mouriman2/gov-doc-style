@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="gov-doc-type" content="ponchi-jigyo">
+<title>地域の郷土資料デジタル化・利活用推進事業</title>
+<style>
+  /* ポンチ絵（予算の事業説明型）。経産省の PR 資料 115 枚のうち 103 枚がこの 3 区画の型。
+     用紙は PowerPoint の「A4」(275×190mm) 横、書体は Meiryo UI、紺の帯見出し＋細い枠、赤い太矢印。 */
+  @page { size: 275mm 190mm; margin: 0; }
+  :root { --navy: #1f3f8f; --red: #c8102e; --pale: #e6edf9; --mark: #fff200; --rule: #1f3f8f; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: #8a8f99; }
+  body { font-family: "Meiryo UI", "Meiryo", sans-serif; color: #000; font-size: 12pt; line-height: 1.42; }
+  @media screen { body { padding: 8mm 0; } .page { margin: 0 auto 8mm; box-shadow: 0 1mm 4mm rgba(0, 0, 0, .35); } }
+  @media print { html { background: none; } }
+
+  .page { width: 275mm; height: 190mm; overflow: hidden; background: #fff; position: relative; break-after: page;
+          display: grid; grid-template-rows: auto minmax(0, 1fr) auto; row-gap: 2.5mm; padding: 6mm 7mm 4mm; }
+  .page:last-child { break-after: auto; }
+
+  /* 上端: 左に事業名と要求額、右に担当課 */
+  header { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 6mm; align-items: start; }
+  .title { display: flex; align-items: center; gap: 3mm; }
+  .badge { flex: none; width: 13mm; height: 13mm; border-radius: 50%; background: var(--red); color: #fff;
+           font-weight: bold; font-size: 10.5pt; display: grid; place-items: center; }
+  .badge.kakuju { background: #2a9d8f; }
+  h1 { font-size: 20pt; line-height: 1.2; }
+  .budget { margin-top: 1.5mm; font-size: 12pt; }
+  .budget b { font-size: 19pt; color: var(--navy); }
+  .dept { text-align: right; font-size: 10.5pt; line-height: 1.5; padding-top: 1mm; }
+
+  /* 本体: 左に目的・概要、右にスキームと成果目標 */
+  .body { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr); column-gap: 3.5mm; min-height: 0; }
+  .right { display: grid; grid-template-rows: auto minmax(0, 1fr); row-gap: 3mm; min-height: 0; }
+  section { border: .35mm solid var(--rule); display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+  section > h2 { background: var(--navy); color: #fff; font-size: 12pt; text-align: center; padding: .8mm 0; letter-spacing: .06em; }
+  section > .in { padding: 2mm 3mm; flex: 1; min-height: 0; }
+
+  h3 { font-size: 11.5pt; margin: 1.2mm 0 .6mm; }
+  h3:first-child { margin-top: 0; }
+  p.lead { text-indent: 1em; }
+  p.bg { margin-top: 1mm; padding: 1mm 2mm; background: var(--pale); padding-left: calc(2mm + 1em); text-indent: -1em; }
+  .spread { display: flex; flex-direction: column; justify-content: space-between; }
+  .item { margin-top: 1mm; }
+  .item > b { display: block; }
+  .item > div { padding-left: 1em; }
+  mark { background: var(--mark); font-weight: bold; }
+  u.r { color: var(--red); text-decoration: underline; font-weight: bold; }
+
+  /* 事業スキームの図: 箱と赤い太矢印 */
+  .scheme { display: grid; grid-template-columns: 24mm 30mm 34mm minmax(0, 1fr); align-items: center; row-gap: 2.5mm; margin: 1mm 0 2mm; }
+  .box { background: var(--navy); color: #fff; font-weight: bold; text-align: center; padding: 2mm 1mm; font-size: 11pt;
+         box-shadow: .6mm .6mm 0 #9aa3b5; line-height: 1.25; }
+  .box.light { background: var(--pale); color: #000; box-shadow: none; border: .3mm solid var(--navy); }
+  .arrow { text-align: center; font-size: 9.5pt; font-weight: bold; line-height: 1.2; padding: 0 1mm; }
+  .arrow::after { content: ""; display: block; margin: .6mm auto 0; width: 88%; height: 5mm; background: var(--red);
+                  clip-path: polygon(0 30%, 66% 30%, 66% 0, 100% 50%, 66% 100%, 66% 70%, 0 70%); }
+  .scheme .tail { font-size: 9.5pt; padding-left: 2mm; line-height: 1.3; }
+  dl.terms { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 1mm; row-gap: .4mm; font-size: 10.5pt; }
+  dl.terms dt { font-weight: bold; }
+
+  ul { list-style: none; }
+  li { padding-left: 1em; text-indent: -1em; margin-bottom: .6mm; }
+  li::before { content: "・"; }
+  li.o::before { content: "○"; }
+
+  table.kpi { border-collapse: collapse; width: 100%; margin-top: 1.5mm; font-size: 10.5pt; }
+  table.kpi th, table.kpi td { border: .25mm solid #888; padding: 1mm 1.5mm; }
+  table.kpi th { background: var(--pale); font-weight: bold; }
+  table.kpi td.n { text-align: right; white-space: nowrap; }
+  p.note { font-size: 9pt; margin-top: 1mm; }
+
+  footer { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 4mm; align-items: end; font-size: 8pt; line-height: 1.35; }
+  .pageno { font-size: 11pt; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div>
+      <div class="title"><span class="badge">新規</span><h1>地域の郷土資料デジタル化・利活用推進事業</h1></div>
+      <div class="budget">令和８年度概算要求額　<b>12億円</b>（10億円）</div>
+    </div>
+    <div class="dept">○○省 ○○局<br>地域文化課（内線0000）</div>
+  </header>
+
+  <div class="body">
+    <section>
+      <h2>事業目的・概要</h2>
+      <div class="in">
+        <h3>事業目的</h3>
+        <p class="lead">地域の図書館が所蔵する郷土資料、古文書及び写真は、劣化や担い手の不足により散逸のおそれがある。本事業は、郷土資料等の<u class="r">デジタル化及び公開を支援</u>し、地域の知の基盤を次世代に継承するとともに、学校教育、観光及び防災への利活用を促進することを目的とする。</p>
+        <p class="bg">○デジタル化に着手した地方公共団体は<b>85団体（全体の4.8％）</b>にとどまり、人口５万人未満の市町村では1.9％。</p>
+        <h3>事業概要</h3>
+        <div class="item"><b>（１）郷土資料等のデジタル化支援</b>
+          <div>地方公共団体が行う郷土資料のデジタル化（撮影、テキスト化、メタデータの付与等）及び公開システムの整備に要する経費の一部を補助する。</div></div>
+        <div class="item"><b>（２）利活用モデルの創出</b>
+          <div>デジタル化した資料を学校の授業、観光案内及び防災教育に活用する<mark>モデル事業を全国10地域で実施</mark>し、成果を事例集として普及する。</div></div>
+        <div class="item"><b>（３）人材育成・連携体制の構築</b>
+          <div>司書、学芸員等を対象とした研修を実施するとともに、都道府県単位の連携協議会の設置を促進し、技術及び知見を共有する。</div></div>
+        <div class="item"><b>（４）全国的な検索基盤との連携</b>
+          <div>各地域で公開した資料を全国的な検索サービスから横断して探せるよう、メタデータの形式を統一し、連携を進める。</div></div>
+      </div>
+    </section>
+
+    <div class="right">
+      <section>
+        <h2>事業スキーム（対象者、対象行為、補助率等）</h2>
+        <div class="in">
+          <div class="scheme">
+            <div class="box">国</div>
+            <div class="arrow">補助（１／２）</div>
+            <div class="box light">地方公共団体</div>
+            <div class="tail">（１）デジタル化<br>及び公開の実施</div>
+            <div class="box">国</div>
+            <div class="arrow">委託</div>
+            <div class="box light">民間企業等</div>
+            <div class="tail">（２）モデル事業<br>（３）研修の実施</div>
+          </div>
+          <dl class="terms">
+            <dt>対象者：</dt><dd>都道府県、市町村、民間企業等</dd>
+            <dt>対象行為：</dt><dd>郷土資料の撮影、テキスト化、公開システムの整備</dd>
+            <dt>補助率：</dt><dd>１／２（上限5,000万円）</dd>
+          </dl>
+        </div>
+      </section>
+
+      <section>
+        <h2>成果目標・事業期間</h2>
+        <div class="in spread">
+          <ul>
+            <li class="o"><b>事業期間</b>：令和８年度～令和12年度（５年間）</li>
+            <li class="o"><b>成果目標</b>：令和12年度までに<u class="r">公開資料数100万点</u>を達成し、郷土資料のデジタル化及び利活用を地域の図書館の標準的な業務として定着させる。</li>
+          </ul>
+          <table class="kpi">
+            <tr><th style="width:48%">成果指標</th><th>現状値<br>（令和６年度）</th><th>目標値<br>（令和12年度）</th></tr>
+            <tr><td>デジタル化に着手した団体数</td><td class="n">85団体</td><td class="n">600団体</td></tr>
+            <tr><td>公開する資料数</td><td class="n">12万点</td><td class="n">100万点</td></tr>
+            <tr><td>資料を授業で活用した学校数</td><td class="n">―</td><td class="n">1,000校</td></tr>
+          </table>
+          <p class="note">※現状値は「郷土資料の保存及び活用に関する実態調査」（令和７年３月）による。</p>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <footer>
+    <div>※（　）内は令和７年度当初予算額。<br>※本資料は様式見本であり、組織名及び数値は架空のものである。</div>
+    <div class="pageno">1</div>
+  </footer>
+</div>
+</body>
+</html>

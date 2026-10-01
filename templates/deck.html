@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="gov-doc-type" content="deck">
+<title>郷土資料のデジタル化の現状と今後の方向性</title>
+<style>
+  /* 複数枚の説明資料（審議会・検討会の「資料１」型）。表紙 → 目次 → 本文の紙。
+     用紙は PowerPoint の「A4」(275×190mm) 横、書体は Meiryo UI。本文の紙は
+     上に見出しと紺の下線、先頭に要点の箱、下に出典とページ番号。 */
+  @page { size: 275mm 190mm; margin: 0; }
+  :root { --navy: #1f3f8f; --red: #c8102e; --pale: #e6edf9; --pale-red: #fbe9eb; --mark: #fff200; --gray: #555; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: #8a8f99; }
+  body { font-family: "Meiryo UI", "Meiryo", sans-serif; color: #000; font-size: 12pt; line-height: 1.45; }
+  @media screen { body { padding: 8mm 0; } .page { margin: 0 auto 8mm; box-shadow: 0 1mm 4mm rgba(0, 0, 0, .35); } }
+  @media print { html { background: none; } }
+  .page { width: 275mm; height: 190mm; overflow: hidden; background: #fff; position: relative; break-after: page; }
+  .page:last-child { break-after: auto; }
+  mark { background: var(--mark); font-weight: bold; }
+  u.r { color: var(--red); text-decoration: underline; font-weight: bold; }
+  b.navy { color: var(--navy); }
+
+  /* 表紙: 右上に資料番号の枠、中央に会議名・表題、下に日付と組織名 */
+  .cover { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; padding: 10mm 14mm 16mm; }
+  .docno { justify-self: end; border: .4mm solid #000; padding: 1mm 5mm; font-size: 15pt; font-weight: bold; letter-spacing: .1em; }
+  .cover .center { align-self: center; text-align: center; }
+  .meeting { font-size: 15pt; }
+  .cover h1 { display: inline-block; font-size: 27pt; line-height: 1.35; margin-top: 7mm; padding: 0 6mm 5mm; border-bottom: 1mm solid var(--navy); }
+  .cover .foot { text-align: center; font-size: 15pt; line-height: 1.7; }
+
+  /* 本文の紙 */
+  .sheet { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; row-gap: 3mm; padding: 6mm 9mm 4mm; }
+  .ph { display: flex; align-items: flex-end; justify-content: space-between; gap: 6mm; border-bottom: .9mm solid var(--navy); padding-bottom: 1.5mm; }
+  .ph h1 { font-size: 19pt; line-height: 1.25; }
+  .ph .tag { font-size: 10pt; color: var(--gray); white-space: nowrap; }
+  .pf { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 4mm; align-items: end; font-size: 8.5pt; line-height: 1.35; }
+  .pf .no { font-size: 11pt; }
+  .content { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; row-gap: 3mm; min-height: 0; }
+  .content.two { grid-template-rows: minmax(0, 1fr) auto; }
+
+  /* 目次 */
+  ol.toc { list-style: none; margin: 12mm 24mm 0; font-size: 17pt; }
+  ol.toc li { display: grid; grid-template-columns: 14mm minmax(0, 1fr) auto; align-items: baseline; padding: 4.5mm 0; border-bottom: .3mm dotted #999; }
+  ol.toc .n { color: var(--navy); font-weight: bold; }
+  ol.toc .pg { font-size: 14pt; }
+
+  /* 要点の箱 */
+  .point { border: .5mm solid var(--navy); background: var(--pale); padding: 2mm 4mm; font-size: 13pt; }
+  .point li { list-style: none; padding-left: 1em; text-indent: -1em; font-weight: bold; }
+  .point li::before { content: "○"; }
+
+  /* 区画 */
+  .cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 4mm; min-height: 0; }
+  section { border: .35mm solid var(--navy); display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+  section > h2 { background: var(--navy); color: #fff; font-size: 12pt; text-align: center; padding: .8mm 0; letter-spacing: .04em; }
+  section > .in { padding: 2mm 3mm; flex: 1; min-height: 0; display: flex; flex-direction: column; }
+  .note { font-size: 11pt; margin-top: 2.5mm; padding-left: 1em; text-indent: -1em; }
+  .ref { border: .3mm dashed var(--navy); padding: 1.5mm 3mm; font-size: 11pt; }
+  .ref b.navy { margin-right: 2mm; }
+
+  /* 横棒グラフ: ラベル・棒・値 */
+  .bars { display: grid; row-gap: 3mm; align-content: space-evenly; flex: 1; --label: 44mm; --val: 34mm; }
+  .bars.long { --label: 58mm; --val: 18mm; }
+  .bar { display: grid; grid-template-columns: var(--label) minmax(0, 1fr) var(--val); column-gap: 2mm; align-items: center; font-size: 11.5pt; line-height: 1.25; }
+  .bar i { display: block; height: 7mm; background: var(--navy); }
+  .bar i.hi { background: var(--red); }
+  .bar .v { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .bar .v b { font-size: 13pt; }
+  .bar .v small { font-size: 9.5pt; }
+
+  /* 課題 → 対応の方向性 */
+  .pairs { display: grid; grid-template-columns: minmax(0, 1fr) 14mm minmax(0, 1.15fr); grid-template-rows: auto repeat(3, minmax(0, 1fr));
+           row-gap: 2.5mm; align-items: stretch; min-height: 0; font-size: 12.5pt; }
+  .pairs .hd { font-weight: bold; text-align: center; color: #fff; padding: .8mm 0; }
+  .pairs .hd.issue { background: var(--red); }
+  .pairs .hd.act { background: var(--navy); }
+  .issue-box { background: var(--pale-red); border: .3mm solid var(--red); padding: 1.5mm 3mm; }
+  .act-box { background: var(--pale); border: .3mm solid var(--navy); padding: 1.5mm 3mm; }
+  .issue-box, .act-box { display: flex; flex-direction: column; justify-content: center; }
+  .issue-box b, .act-box b { display: block; font-size: 13.5pt; }
+  .to { align-self: center; height: 7mm; background: var(--red); clip-path: polygon(0 30%, 60% 30%, 60% 0, 100% 50%, 60% 100%, 60% 70%, 0 70%); }
+
+  /* 工程表 */
+  .sched { display: grid; grid-template-columns: 34mm repeat(3, minmax(0, 1fr)); font-size: 11.5pt; border-left: .3mm solid #888; border-top: .3mm solid #888; }
+  .sched > div { border-right: .25mm solid #bbb; border-bottom: .25mm solid #bbb; padding: .8mm 2mm; min-height: 7.5mm; display: flex; align-items: center; }
+  .sched .h { background: var(--pale); font-weight: bold; justify-content: center; }
+  .sched .k { font-weight: bold; }
+  .sched .span { padding: .8mm 1mm; }
+  .sched .span span { display: block; width: 100%; background: var(--navy); color: #fff; font-weight: bold; padding: .4mm 2mm;
+                      clip-path: polygon(0 0, calc(100% - 3mm) 0, 100% 50%, calc(100% - 3mm) 100%, 0 100%); }
+  .sched .span.s2 { grid-column: span 2; }
+  .sched .span.s3 { grid-column: span 3; }
+  .subhead { font-size: 13pt; font-weight: bold; color: var(--navy); border-left: 1.5mm solid var(--navy); padding-left: 2mm; margin-bottom: 1.5mm; }
+</style>
+</head>
+<body>
+
+<div class="page cover" data-role="cover">
+  <div class="docno">資料１</div>
+  <div class="center">
+    <div class="meeting">第３回 地域資料のデジタル化に関する検討会</div>
+    <h1>郷土資料のデジタル化の<br>現状と今後の方向性</h1>
+  </div>
+  <div class="foot">令和８年10月１日<br>○○省 ○○局 地域文化課</div>
+</div>
+
+<div class="page sheet" data-role="toc">
+  <div class="ph"><h1>目次</h1><span class="tag">資料１</span></div>
+  <ol class="toc">
+    <li><span class="n">１．</span><span class="t">郷土資料のデジタル化の現状</span><span class="pg">３</span></li>
+    <li><span class="n">２．</span><span class="t">課題と対応の方向性</span><span class="pg">４</span></li>
+    <li><span class="n">３．</span><span class="t">今後のスケジュール</span><span class="pg">４</span></li>
+  </ol>
+  <div class="pf"><div></div><div class="no">2</div></div>
+</div>
+
+<div class="page sheet">
+  <div class="ph"><h1>１．郷土資料のデジタル化の現状</h1><span class="tag">資料１</span></div>
+  <div class="content">
+    <ul class="point">
+      <li>郷土資料のデジタル化に着手した地方公共団体は<u class="r">85団体（全体の4.8％）</u>にとどまる。</li>
+      <li>人口規模の小さい市町村ほど着手率が低く、<mark>人口５万人未満では1.9％</mark>。理由の最多は専門人材の不足。</li>
+    </ul>
+    <div class="cols">
+      <section>
+        <h2>団体の種類・人口規模別の着手率</h2>
+        <div class="in">
+          <div class="bars">
+            <div class="bar"><span>都道府県</span><i style="width:100%"></i><span class="v"><b>38.3％</b> <small>（18/47）</small></span></div>
+            <div class="bar"><span>人口20万人以上の市</span><i style="width:43.1%"></i><span class="v"><b>16.5％</b> <small>（19/115）</small></span></div>
+            <div class="bar"><span>人口５～20万人の市区</span><i style="width:16.4%"></i><span class="v"><b>6.3％</b> <small>（25/400）</small></span></div>
+            <div class="bar"><span>人口５万人未満の市町村</span><i class="hi" style="width:5%"></i><span class="v"><b>1.9％</b> <small>（23/1,226）</small></span></div>
+          </div>
+          <p class="note">○デジタル化した資料のうち、インターネットで公開しているものは<b>約４割</b>。公開に至らない主な理由は、権利処理及び公開システムの整備。</p>
+          <p class="note">○着手した団体の約７割が、県立図書館等との共同事業として実施している。</p>
+        </div>
+      </section>
+      <section>
+        <h2>着手していない理由（複数回答、上位５項目）</h2>
+        <div class="in">
+          <div class="bars long">
+            <div class="bar"><span>専門知識を持つ職員がいない</span><i class="hi" style="width:100%"></i><span class="v"><b>68.2％</b></span></div>
+            <div class="bar"><span>予算を確保できない</span><i style="width:90.2%"></i><span class="v"><b>61.5％</b></span></div>
+            <div class="bar"><span>撮影機材・作業場所がない</span><i style="width:59.1%"></i><span class="v"><b>40.3％</b></span></div>
+            <div class="bar"><span>著作権・肖像権の確認が難しい</span><i style="width:49.4%"></i><span class="v"><b>33.7％</b></span></div>
+            <div class="bar"><span>公開後の活用方法が分からない</span><i style="width:40.9%"></i><span class="v"><b>27.9％</b></span></div>
+          </div>
+          <p class="note">○「専門知識を持つ職員がいない」は、人口５万人未満の市町村では81.4％に上る。</p>
+        </div>
+      </section>
+    </div>
+    <div class="ref"><b class="navy">（参考）先行事例</b>△△県では、県立図書館が撮影機材と作業場所を市町村に貸し出し、県内12市町村が共同でデジタル化を実施（令和５年度～）。着手から２年で約3.2万点を公開し、小学校の郷土学習の教材として活用されている。</div>
+  </div>
+  <div class="pf">
+    <div>出典：○○省「郷土資料の保存及び活用に関する実態調査」（令和７年３月）。対象は全地方公共団体1,788団体（回答率92.4％）。<br>※本資料は様式見本であり、組織名及び数値は架空のものである。</div>
+    <div class="no">3</div>
+  </div>
+</div>
+
+<div class="page sheet">
+  <div class="ph"><h1>２．課題と対応の方向性</h1><span class="tag">資料１</span></div>
+  <div class="content two">
+    <div class="pairs">
+      <div class="hd issue">課題</div><div></div><div class="hd act">対応の方向性</div>
+      <div class="issue-box"><div><b>①専門人材の不足</b>撮影、メタデータの付与等の知識を持つ職員がおらず、着手できない。人口５万人未満の市町村では８割が該当。</div></div>
+      <div class="to"></div>
+      <div class="act-box"><div><b>研修及び専門家派遣の実施</b>司書、学芸員等を対象とした研修を<u class="r">年20回</u>実施し、専門家を派遣する制度を設ける。</div></div>
+      <div class="issue-box"><div><b>②費用負担</b>機材の購入、外部委託等の費用を単独で賄えない。１団体あたりの初期費用は平均850万円。</div></div>
+      <div class="to"></div>
+      <div class="act-box"><div><b>補助及び共同調達の促進</b>経費の<u class="r">１／２を補助</u>し、都道府県単位での機材の共同利用及び作業の共同委託を促す。</div></div>
+      <div class="issue-box"><div><b>③権利処理・公開の壁</b>著作権、肖像権の確認方法が分からず、公開に至らない。</div></div>
+      <div class="to"></div>
+      <div class="act-box"><div><b>手引きの作成及び相談窓口の設置</b>権利処理の手引きを作成し、<mark>相談窓口を令和９年度に開設</mark>する。</div></div>
+    </div>
+    <div class="schedwrap"><div class="subhead">３．今後のスケジュール</div>
+    <div class="sched" data-fit="今後のスケジュール">
+      <div class="h">区分</div><div class="h">令和８年度</div><div class="h">令和９年度</div><div class="h">令和10年度以降</div>
+      <div class="k">検討会</div><div class="span"><span>中間とりまとめ（12月）</span></div><div>最終とりまとめ（６月）</div><div></div>
+      <div class="k">補助事業</div><div>制度設計・予算要求</div><div class="span s2"><span>公募・交付（全国展開）</span></div>
+      <div class="k">研修・手引き</div><div>手引きの作成</div><div class="span s2"><span>研修の実施・相談窓口の運営</span></div>
+    </div></div>
+  </div>
+  <div class="pf">
+    <div>※スケジュールは現時点の想定であり、検討会での議論等を踏まえて見直す。<br>※本資料は様式見本であり、組織名及び数値は架空のものである。</div>
+    <div class="no">4</div>
+  </div>
+</div>
+
+</body>
+</html>

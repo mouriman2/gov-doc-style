@@ -1,0 +1,28 @@
+[project]
+name = "gov-doc-style"
+version = "0.1.0"
+description = "省庁風の資料（ポンチ絵・説明資料・通知文）を HTML から PNG・PDF に書き出し、はみ出しと見た目の数字を検査する"
+requires-python = ">=3.12"
+license = "MIT"
+readme = "README.md"
+dependencies = ["playwright>=1.50", "pdfplumber>=0.11"]
+
+[project.scripts]
+gov-doc-render = "gov_doc_style.render:main"
+
+[dependency-groups]
+dev = ["pytest>=8", "ruff>=0.6", "pyright>=1.1.380"]
+
+[build-system]
+requires = ["uv_build>=0.8.0,<0.9.0"]
+build-backend = "uv_build"
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.pyright]
+pythonVersion = "3.12"
+include = ["src", "tests"]

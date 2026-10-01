@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="gov-doc-type" content="ponchi-gaiyo">
+<title>郷土資料デジタル化推進事業の実施状況</title>
+<style>
+  /* ポンチ絵（概要一覧型）。骨太の方針の概要のように、決まったこと・分かったことを 1 枚に全部載せる型。
+     用紙は PowerPoint の「A4」(275×190mm) 横、書体は Meiryo UI、紺の帯・赤矢印・黄色の蛍光ペン。
+     見本の中身は架空（ほかのひな形と同じ「郷土資料のデジタル化」の題材）。 */
+  @page { size: 275mm 190mm; margin: 0; }
+  :root { --navy:#1f3f8f; --red:#c8102e; --pale:#e6edf9; --line:#1f3f8f; --mark:#fff200; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: #8a8f99; }
+  body { font-family: "Meiryo UI", "Meiryo", sans-serif; font-size: 7.4pt; line-height: 1.38; color: #000; }
+  @media screen { body { padding: 8mm 0; } .page { margin: 0 auto 8mm; box-shadow: 0 1mm 4mm rgba(0, 0, 0, .35); } }
+  @media print { html { background: none; } }
+  .page { width: 275mm; height: 190mm; overflow: hidden; background: #fff; position: relative; break-after: page;
+          display: grid; grid-template-rows: 20mm minmax(0, 95fr) minmax(0, 60fr) auto; row-gap: 2mm; padding: 4mm 5mm 2.5mm; }
+  .page:last-child { break-after: auto; }
+  b, .b { font-weight: bold; }
+  mark { background: var(--mark); font-weight: bold; }
+  u.r { color: var(--red); text-decoration: underline; font-weight: bold; }
+  .small { font-size: 6pt; }
+
+  header { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 4mm; align-items: start; }
+  .badge { display: inline-block; width: 11mm; height: 11mm; border-radius: 50%; background: #2a9d8f; color: #fff; font-weight: bold; font-size: 8pt; line-height: 1.1; text-align: center; padding-top: 1.6mm; vertical-align: top; margin-right: 2mm; }
+  h1 { display: inline-block; font-size: 17pt; line-height: 1.15; vertical-align: top; }
+  h1 span { display: block; font-size: 9.5pt; font-weight: bold; color: var(--navy); margin-top: .6mm; }
+  .period { margin-top: 1mm; font-size: 8pt; }
+  .period b { font-size: 11pt; }
+  .rt { text-align: right; font-size: 7.6pt; }
+  .stamp { display: inline-block; border: .5mm solid #000; border-radius: 1.5mm; padding: .6mm 2mm; font-weight: bold; letter-spacing: .15em; text-align: center; margin-bottom: 1mm; }
+
+  .row { display: grid; column-gap: 2.5mm; }
+  .row { min-height: 0; }
+  .row1 { grid-template-columns: 70mm minmax(0, 1fr) 80mm; }
+  .row2 { grid-template-columns: minmax(0, 1fr) 120mm; }
+  section { border: .35mm solid var(--line); display: flex; flex-direction: column; min-height: 0; }
+  section > h2 { background: var(--navy); color: #fff; font-size: 9pt; text-align: center; padding: .5mm 0; letter-spacing: .08em; }
+  section > .in { padding: 1.4mm 2mm; flex: 1; min-height: 0; }
+  .spread { display: flex; flex-direction: column; justify-content: space-between; }
+
+  .kpi { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2mm; }
+  .kpi div { background: var(--pale); padding: .8mm 1.2mm; }
+  .kpi .v { font-size: 11.5pt; font-weight: bold; color: var(--navy); line-height: 1.1; }
+  .kpi .v small { font-size: 7pt; color: #000; }
+  .kpi .wide { grid-column: 1 / 3; }
+  .bars { margin-top: 1.4mm; }
+  .bars .t { font-weight: bold; }
+  .bar { display: grid; grid-template-columns: 16mm 1fr 10mm; align-items: center; column-gap: 1mm; font-size: 6.6pt; }
+  .bar i { display: block; height: 2.4mm; background: var(--navy); }
+  .bar.alt i { background: #7fa2e0; }
+
+  table { border-collapse: collapse; width: 100%; }
+  td, th { border: .25mm solid #888; padding: 1.1mm 1.2mm; vertical-align: top; }
+  th { background: var(--pale); font-weight: bold; white-space: nowrap; }
+  td.c { text-align: center; white-space: nowrap; font-weight: bold; }
+  .field { font-weight: bold; color: var(--navy); }
+
+  h3 { font-size: 8pt; background: var(--pale); border-left: 1.2mm solid var(--navy); padding: .2mm 1.5mm; margin: 1mm 0 .8mm; }
+  h3.red { border-left-color: var(--red); background: #fdeaea; }
+  ul { list-style: none; }
+  li { padding-left: 3.2mm; text-indent: -3.2mm; margin-bottom: .5mm; }
+  li::before { content: "◆"; font-size: 5.5pt; margin-right: 1mm; color: var(--navy); }
+  li.o::before { content: "○"; }
+  .sub { padding-left: 3.2mm; font-size: 6.6pt; }
+
+  .flow { display: grid; grid-template-columns: 13mm 19mm 1fr 10mm 30mm; align-items: center; margin-top: 1mm; }
+  .box { background: var(--navy); color: #fff; font-weight: bold; text-align: center; padding: 1.6mm .5mm; font-size: 8pt; box-shadow: .5mm .5mm 0 #9aa; }
+  .box.light { background: var(--pale); color: #000; box-shadow: none; border: .3mm solid var(--navy); font-size: 7pt; padding: .8mm .5mm; }
+  .arrow { text-align: center; font-size: 6.4pt; line-height: 1.15; }
+  .arrow::after { content: ""; display: block; margin: .4mm auto 0; width: 82%; height: 3.4mm; background: var(--red); clip-path: polygon(0 28%, 68% 28%, 68% 0, 100% 50%, 68% 100%, 68% 72%, 0 72%); }
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: .8mm; margin-top: 1mm; }
+  .core { border: .3mm dashed var(--navy); padding: 1mm; }
+  .outs { display: grid; gap: .7mm; }
+  .back { margin-top: 1.4mm; border-top: .3mm dashed var(--red); padding-top: 1mm; }
+  .back b { color: var(--red); }
+
+  .plan { display: grid; grid-template-columns: 17mm 1fr; border: .25mm solid #888; border-bottom: none; }
+  .plan:last-of-type { border-bottom: .25mm solid #888; }
+  .plan > .k { background: var(--pale); font-weight: bold; text-align: center; padding: .8mm .5mm; border-right: .25mm solid #888; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.2; }
+  .plan > .d { padding: 1mm 1.2mm; }
+  .plan.done > .k { background: #ddd; }
+
+  footer { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 4mm; align-items: end; font-size: 5.8pt; line-height: 1.3; }
+  .pageno { font-size: 10pt; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div>
+      <span class="badge">継続<br>拡充</span><h1>郷土資料デジタル化推進事業の実施状況<span>～事業開始から１年の成果と、令和９年度に向けた対応方針～</span></h1>
+      <div class="period">対象期間 <b>令和７年４月～令和８年３月</b>（令和７年度）　着手団体 <b>142</b>団体（前年度 85）　公開資料 <b>18.6</b>万点　利用 <b>38</b>万件（前年度 21万件）</div>
+    </div>
+    <div class="rt">
+      <div class="stamp">令和８年６月20日<br>検討会 資料２</div><br>
+      ○○省 ○○局<br>地域文化課
+    </div>
+  </header>
+
+  <div class="row row1">
+    <section>
+      <h2>１　現状（主要指標）</h2>
+      <div class="in spread">
+        <div class="kpi">
+          <div><div class="v">142<small>団体</small></div>デジタル化に着手<span class="small">（前年度 85）</span></div>
+          <div><div class="v">18.6<small>万点</small></div>公開資料<span class="small">（前年度 12.0万点）</span></div>
+          <div class="wide"><div class="v">4.8<small>億円</small></div>補助金の交付額（交付決定 96件）</div>
+          <div><div class="v">1,250<small>人</small></div>研修の受講者<br><span class="small">司書・学芸員 等</span></div>
+          <div><div class="v">73<small>％</small></div>利用者の満足度<br><span class="small">利用者アンケート</span></div>
+        </div>
+        <div class="bars">
+          <div class="t">○団体の規模別の着手率</div>
+          <div class="bar"><span>都道府県</span><i style="width:100%"></i><span>46.8%</span></div>
+          <div class="bar"><span>20万人以上</span><i style="width:57.7%"></i><span>27.0%</span></div>
+          <div class="bar"><span>５～20万人</span><i style="width:26.3%"></i><span>12.3%</span></div>
+          <div class="bar alt"><span>５万人未満</span><i style="width:7.1%"></i><span>3.3%</span></div>
+        </div>
+        <div class="bars">
+          <div class="t">○目標（令和９年度 300団体）に対する進捗　<mark>47％</mark>（142/300）</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>２　主な取組分野（５分野）</h2>
+      <div class="in">
+        <table>
+          <tr><th>分野</th><th>主な内容</th><th>規模</th></tr>
+          <tr><td class="field" style="width:28mm">①デジタル化の支援</td><td>撮影・テキスト化・メタデータの付与に要する経費を補助。古文書・写真・地図 等の撮影を、都道府県単位の<u class="r">共同調達で効率化</u></td><td class="c">96件</td></tr>
+          <tr><td class="field">②利活用のモデル</td><td>学校の授業、観光案内、防災教育での活用を全国 10 地域で実施。<mark>小学校 210 校が郷土学習で活用</mark></td><td class="c">10地域</td></tr>
+          <tr><td class="field">③人材の育成</td><td>司書・学芸員向けの研修を年 24 回実施（受講 1,250 人）。撮影・権利処理等の専門家を 38 件派遣</td><td class="c">24回</td></tr>
+          <tr><td class="field">④権利処理の支援</td><td>権利処理の手引き（初版）を作成し、相談窓口を開設。著作権・肖像権 等の相談に対応</td><td class="c">312件</td></tr>
+          <tr><td class="field">⑤全国検索との連携</td><td>メタデータの形式を統一し、<u class="r">全国的な検索サービスと 64 団体が連携</u>。他地域の資料と横断して検索可能に</td><td class="c">64団体</td></tr>
+        </table>
+        <div style="margin-top:1.2mm"><b>○事業の特徴</b>：都道府県が市町村分を取りまとめる<mark>「共同実施型」が採択の６割</mark>。単独では着手できない小規模な団体の参加が増加</div>
+        <div><b>○予算</b>：令和７年度 <b>5.2億円</b>、執行率 92％（交付決定 96件、うち共同実施型 58件）。不用額は機材の共同調達による経費の縮減等による</div>
+        <div><b>○利用の内訳</b>：学校の授業 41％、一般の閲覧 33％、観光・まちづくり 15％、防災・その他 11％</div>
+        <div class="small" style="margin-top:.6mm">※規模は令和７年度の実績（件数・地域数・回数・団体数）。利用の内訳は全国検索サービス経由の利用を含む。</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>３　評価（成果及び課題）</h2>
+      <div class="in">
+        <h3>成果（うまくいっていること）</h3>
+        <ul>
+          <li><mark>小規模な団体の着手が倍増</mark><div class="sub">人口５万人未満の市町村が 23 団体から 40 団体に。共同実施型の効果</div></li>
+          <li>教育の現場での活用の広がり<div class="sub">郷土学習の教材として小学校 210 校が活用。教員向けの利用の手引きも作成</div></li>
+          <li>研修による担い手の確保<div class="sub">受講者の８割が「自団体で撮影・メタデータの付与ができる」と回答</div></li>
+          <li>全国検索との連携の開始<div class="sub">64 団体の資料を横断して検索可能に。他地域からの利用が３割</div></li>
+        </ul>
+        <h3 class="red">課題（残っていること）　※事業報告による</h3>
+        <ul>
+          <li><u class="r">権利処理の負担が大きい</u>（相談 312 件の７割が著作権・肖像権）<div class="sub">デジタル化したが公開に至らない資料が約４割残る。古写真の写り込み、寄贈者の不明等が主な理由</div></li>
+          <li><u class="r">機材と作業場所の不足</u><div class="sub">共同利用の機材の予約が３か月待ちの地域がある。大判の地図等は撮影できる場所が限られる</div></li>
+          <li><u class="r">公開後の維持費用</u><div class="sub">公開システムの保守費用を単独で賄えない団体が２割</div></li>
+        </ul>
+        <div class="small">（参考）利用者アンケートの回答 2,840 件。満足 73％、どちらでもない 19％、不満 ８％</div>
+      </div>
+    </section>
+  </div>
+
+  <div class="row row2">
+    <section>
+      <h2>４　事業スキーム（共同実施型）</h2>
+      <div class="in spread">
+        <div class="flow">
+          <div class="box">国</div>
+          <div class="arrow">補助（１／２）</div>
+          <div class="core">
+            <div class="box">都道府県（市町村分を取りまとめ）</div>
+            <div class="steps">
+              <div class="box light">撮影</div><div class="box light">テキスト化</div><div class="box light">メタデータ</div><div class="box light">公開</div>
+            </div>
+          </div>
+          <div class="arrow">活用</div>
+          <div class="outs">
+            <div class="box light">学校の授業</div>
+            <div class="box light">観光案内</div>
+            <div class="box light">防災教育</div>
+            <div class="box light">全国検索サービス</div>
+          </div>
+        </div>
+        <div class="back"><b>⇐ 利用者の意見は年１回のアンケートで把握</b>：「授業で使える解像度がほしい」「地図の資料を増やしてほしい」「英語の説明がほしい」等。次年度の撮影計画に反映</div>
+        <div><b>○構造上の論点</b>：補助は撮影・公開の初期費用が対象 → <u class="r">公開後の保守費用を誰が負担するか</u>（令和９年度の予算要求に向けて検討）</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>５　今後の対応方針</h2>
+      <div class="in">
+        <div class="plan"><div class="k"><span>短期</span><span class="small">（令和８年度）</span></div><div class="d">
+          ・<mark>権利処理の手引きの改訂及び相談窓口の増員</mark><br>
+          ・機材の共同利用の枠の拡大（貸出機材を倍増）<br>
+          ・公開システムの保守費用の実態調査（着手した全 142 団体）</div></div>
+        <div class="plan"><div class="k"><span>中期</span><span class="small">（令和９年度）</span></div><div class="d">
+          ・公開システムの保守費用を補助の対象に加えることの検討<br>
+          ・英語 等の多言語での説明の付与<br>
+          ・観光・防災分野の利活用モデルの全国への展開</div></div>
+        <div class="plan"><div class="k"><span>長期</span><span class="small">（構想）</span></div><div class="d">
+          ・デジタル化を図書館の標準業務とし、補助から自立した運営へ移行<br>
+          ・全国検索サービスとの連携を全団体に拡大</div></div>
+        <div class="plan done"><div class="k">対応済</div><div class="d">
+          ・共同実施型の採択枠の新設（令和７年度）　・教員向けの利用の手引きの作成</div></div>
+        <div style="margin-top:1mm">○次回：<b>令和９年３月</b>に令和８年度の実施状況を報告</div>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <div>※数値は令和７年度の事業報告による。満足度は利用者アンケート（回答 2,840 件）による。規模別の着手率は、各区分の団体数に対する着手した団体の割合。<br>
+    ※本資料は様式見本であり、組織名及び数値は架空のものである。</div>
+    <div class="pageno">1</div>
+  </footer>
+</div>
+</body>
+</html>
